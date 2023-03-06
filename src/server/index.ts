@@ -2,9 +2,9 @@ import express from "express";
 import morgan from "morgan";
 import cors from "cors";
 import options from "../cors.js";
-import usersRouter from "./routers/usersRouters.js";
+import gamesRouter from "./routers/gamesRouters.js";
 
-const userEndpoint = "/users";
+const gameEndpoint = "/games";
 
 export const app = express();
 
@@ -14,4 +14,4 @@ app.use(cors(options));
 app.use(morgan("dev"));
 app.use(express.json());
 
-app.use(userEndpoint, usersRouter);
+app.use(gameEndpoint, gamesRouter);
