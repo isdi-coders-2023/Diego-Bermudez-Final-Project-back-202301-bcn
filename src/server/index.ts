@@ -1,10 +1,9 @@
 import express from "express";
 import morgan from "morgan";
 import cors from "cors";
-import options from "../cors";
-import usersRouter from "./routers/usersRouters";
+import options from "../cors.js";
+import usersRouter from "./routers/usersRouters.js";
 
-const root = "/";
 const userEndpoint = "/users";
 
 export const app = express();
