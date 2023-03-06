@@ -20,7 +20,7 @@ const gameSchema = new Schema({
     maxLength: 800,
   },
   price: {
-    type: Number,
+    type: String,
     required: true,
   },
   cover: {
