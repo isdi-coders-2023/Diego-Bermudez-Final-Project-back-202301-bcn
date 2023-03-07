@@ -2,7 +2,7 @@ import createDebug from "debug";
 import type CustomError from "./CustomError/CustomError.js";
 import { app } from "./server/index.js";
 
-const debug = createDebug("server:startServer:");
+const debug = createDebug("Back2Game:startServer");
 const startingServerErrorMessage = "Error on starting the server";
 const errorCodeAddresInUse = "EADDRINUSE";
 
