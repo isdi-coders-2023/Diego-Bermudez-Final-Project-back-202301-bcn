@@ -1,8 +1,10 @@
 import chalk from "chalk";
-import debug from "debug";
+import createDebug from "debug";
 import connectToDatabase from "./database/models/connectToDataBase.js";
 import "./loadEnvironment.js";
 import startServer from "./startServer.js";
+
+export const debug = createDebug("Back2Game:serverConnection");
 
 const port = process.env.PORT ?? 4000;
 const mongoDbUrl = process.env.MONGODB_URL_CONNECTION;
