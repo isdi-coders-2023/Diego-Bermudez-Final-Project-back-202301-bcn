@@ -2,19 +2,17 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import { type Response, type Request } from "express";
-import request from "supertest";
 import User from "../../database/models/User.js";
 import { loginUser } from "./usersControllers.js";
 import { type UserStructure } from "../../types.js";
-import { app } from "../index.js";
-
-const mockedUser = {
-  username: "di3boss",
-  password: "123456789",
-  email: "",
-};
 
 describe("Given a POST 'users/login' endpoint", () => {
+  const mockedUser = {
+    username: "di3boss",
+    password: "123456789",
+    email: "",
+  };
+
   describe("When it receives a login request with username 'di3boss' and password '123456789'", () => {
     test("Then it should respond with status code '200' and its json method with a token", async () => {
       const expectedStatusCodeOk = 200;
