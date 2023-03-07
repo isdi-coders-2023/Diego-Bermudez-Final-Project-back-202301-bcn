@@ -2,7 +2,7 @@ import chalk from "chalk";
 import createDebug from "debug";
 import connectToDatabase from "./database/models/connectToDataBase.js";
 import "./loadEnvironment.js";
-import startServer from "./startServer.js";
+import startServer from "./server/startServer.js";
 
 export const debug = createDebug("Back2Game:serverConnection");
 
