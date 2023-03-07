@@ -8,3 +8,12 @@ export interface GameStructure {
 }
 
 export type GamesStructure = GameStructure[];
+
+export interface UserStructure {
+  username: string;
+  password: string;
+  email: string;
+  games: string[];
+}
+
+export type UsersStructure = UserStructure[];
