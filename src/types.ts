@@ -17,3 +17,5 @@ export interface UserStructure {
 }
 
 export type UsersStructure = UserStructure[];
+
+export type UserCredentials = Pick<UserStructure, "username" | "password">;
