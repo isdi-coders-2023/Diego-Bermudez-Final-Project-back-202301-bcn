@@ -7,7 +7,8 @@ const errors = {
   unauthorized: {
     message: "Unauthorized: User or password not found.",
     statusCode: 401,
-    publicMessage: "Unauthorized: User or password not found.",
+    publicMessage: "Unauthorized: User not found.",
+    wrongCredentialsMessage: "Unauthorized: Wrong credentials",
   },
   forbidden: {
     message: "Forbidden: You're missing permission to execute this request.",
