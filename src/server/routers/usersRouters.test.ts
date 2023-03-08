@@ -33,8 +33,6 @@ describe("Given a POST 'user/login' endpoint", () => {
         password: "123456789",
         email: "di3boos@gmail.com",
       };
-
-      const expectedStatus = 200;
       const endpoint = "/users/login";
 
       jwt.sign = jest.fn().mockImplementation(() => ({

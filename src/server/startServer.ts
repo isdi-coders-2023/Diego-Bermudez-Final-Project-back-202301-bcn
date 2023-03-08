@@ -1,3 +1,4 @@
+import "../loadEnvironment.js";
 import createDebug from "debug";
 import type CustomError from "../CustomError/CustomError.js";
 import errors from "./constants/errors.js";

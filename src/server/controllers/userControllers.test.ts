@@ -5,7 +5,7 @@ import { MongoMemoryServer } from "mongodb-memory-server";
 import { type Response, type Request, type NextFunction } from "express";
 import User from "../../database/models/User.js";
 import { loginUser } from "./usersControllers.js";
-import { type UserCredentials } from "../../types.js";
+import { type CustomRequest } from "../../types.js";
 import CustomError from "../../CustomError/CustomError.js";
 import connectToDatabase from "../../database/connectToDataBase.js";
 import errors from "../constants/errors.js";
@@ -30,17 +30,17 @@ describe("Given a POST 'users/login' endpoint", () => {
     email: "",
   };
 
-  const request = {} as Request;
+  const request: Partial<Request> = {};
 
-  const response = {
+  const response: Partial<Response> = {
     status: jest.fn().mockReturnThis(),
     json: jest.fn(),
-  } as unknown as Response<unknown>;
+  };
 
   request.body = {
     username: mockedUser.username,
     password: mockedUser.password,
-  } as Partial<Request>;
+  };
 
   const next = jest.fn() as NextFunction;
 
@@ -65,15 +65,7 @@ describe("Given a POST 'users/login' endpoint", () => {
         .mockResolvedValue(mockedHasedPasswordCompareResult);
       jwt.sign = jest.fn().mockReturnValue(expectedToken.token);
 
-      await loginUser(
-        request as Request<
-          Record<string, unknown>,
-          Record<string, unknown>,
-          UserCredentials
-        >,
-        response as Response,
-        next
-      );
+      await loginUser(request as CustomRequest, response as Response, next);
 
       expect(response.status).toHaveBeenCalledWith(expectedStatusCodeOk);
       expect(response.json).toHaveBeenCalledWith(expectedToken);
@@ -105,15 +97,7 @@ describe("Given a POST 'users/login' endpoint", () => {
 
       bcrypt.compare = jest.fn().mockResolvedValue(false);
 
-      await loginUser(
-        request as Request<
-          Record<string, unknown>,
-          Record<string, unknown>,
-          UserCredentials
-        >,
-        response as Response,
-        next
-      );
+      await loginUser(request as CustomRequest, response as Response, next);
 
       expect(next).toHaveBeenCalledWith(expectedError);
     });
