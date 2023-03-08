@@ -1,5 +1,6 @@
 import { type Response, type Request } from "express";
 import Game from "../../database/models/Game.js";
+import successes from "../constants/successes.js";
 import { getGames } from "./gamesControllers.js";
 
 const mockedGames = [
@@ -33,7 +34,7 @@ describe("Given the getGames controller middlleware", () => {
 
       const next = jest.fn();
 
-      const expectedCodeStatus = 200;
+      const expectedCodeStatus = successes.ok.statusCode;
 
       Game.find = jest.fn().mockImplementationOnce(() => ({
         exec: jest.fn().mockResolvedValue(mockedGames),

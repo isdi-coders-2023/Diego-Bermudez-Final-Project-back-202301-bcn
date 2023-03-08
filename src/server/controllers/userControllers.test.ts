@@ -5,11 +5,11 @@ import { MongoMemoryServer } from "mongodb-memory-server";
 import { type Response, type Request, type NextFunction } from "express";
 import User from "../../database/models/User.js";
 import { loginUser } from "./usersControllers.js";
-import { type UserStructure } from "../../types.js";
+import { type UserCredentials } from "../../types.js";
 import CustomError from "../../CustomError/CustomError.js";
-import connectToDatabase from "../../database/models/connectToDataBase.js";
-
-let mongoBbServer: MongoMemoryServer;
+import connectToDatabase from "../../database/connectToDataBase.js";
+import errors from "../constants/errors.js";
+import successes from "../constants/successes.js";
 
 let server: MongoMemoryServer;
 
@@ -46,7 +46,7 @@ describe("Given a POST 'users/login' endpoint", () => {
 
   describe("When it receives a login request with username 'di3boss' and password '123456789'", () => {
     test("Then it should respond with status code '200' and its json method with a token", async () => {
-      const expectedStatusCodeOk = 200;
+      const expectedStatusCodeOk = successes.ok.statusCode;
       const mockedHasedPasswordCompareResult = true;
 
       const expectedToken = {
@@ -69,7 +69,7 @@ describe("Given a POST 'users/login' endpoint", () => {
         request as Request<
           Record<string, unknown>,
           Record<string, unknown>,
-          UserStructure
+          UserCredentials
         >,
         response as Response,
         next
@@ -89,9 +89,9 @@ describe("Given a POST 'users/login' endpoint", () => {
       };
 
       const expectedError = new CustomError(
-        "Unauthorized: User not found",
-        401,
-        "Unauthorized: User not found"
+        errors.unauthorized.message,
+        errors.unauthorized.statusCode,
+        errors.unauthorized.publicMessage
       );
 
       request.body = mockedWrongUser;
@@ -109,7 +109,7 @@ describe("Given a POST 'users/login' endpoint", () => {
         request as Request<
           Record<string, unknown>,
           Record<string, unknown>,
-          UserStructure
+          UserCredentials
         >,
         response as Response,
         next

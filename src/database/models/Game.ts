@@ -1,5 +1,8 @@
 import { model, Schema } from "mongoose";
 
+const documentModelName = "Game";
+const collectionName = "games";
+
 const gameSchema = new Schema({
   title: {
     type: String,
@@ -28,6 +31,6 @@ const gameSchema = new Schema({
   },
 });
 
-const Game = model("Game", gameSchema, "games");
+const Game = model(documentModelName, gameSchema, collectionName);
 
 export default Game;

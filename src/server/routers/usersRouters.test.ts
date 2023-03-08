@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 import User from "../../database/models/User.js";
-import connectToDatabase from "../../database/models/connectToDataBase.js";
+import connectToDatabase from "../../database/connectToDataBase.js";
 import { app } from "..";
 
 let mongoBbServer: MongoMemoryServer;

@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
-
-const databaseConnectionError = "Error while connecting to data base";
+import errors from "../server/constants/errors.js";
 
 const connectToDatabase = async (url: string) => {
   mongoose.set("strictQuery", false);
@@ -8,7 +7,7 @@ const connectToDatabase = async (url: string) => {
   try {
     await mongoose.connect(url);
   } catch (error) {
-    throw new Error(databaseConnectionError);
+    throw new Error(errors.serverError.databaseMessage);
   }
 };
 
