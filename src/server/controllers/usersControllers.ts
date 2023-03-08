@@ -1,13 +1,15 @@
-import { type NextFunction, type Response, type Request } from "express";
+import { type NextFunction, type Response } from "express";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import User from "../../database/models/User.js";
-import { type UserStructure } from "../../types.js";
+import { type CustomRequest } from "../../types.js";
 import { type CustomJwtPayload } from "./types.js";
 import CustomError from "../../CustomError/CustomError.js";
+import errors from "../constants/errors.js";
+import successes from "../constants/successes.js";
 
 export const loginUser = async (
-  req: Request<Record<string, unknown>, Record<string, unknown>, UserStructure>,
+  req: CustomRequest,
   res: Response,
   next: NextFunction
 ) => {
@@ -16,14 +18,20 @@ export const loginUser = async (
   try {
     const user = await User.findOne({ username }).exec();
 
-    if (!user || !(await bcrypt.compare(password, user.password))) {
-      const error = new CustomError(
-        "Unauthorized: User not found",
-        401,
-        "Unauthorized: User not found"
+    if (!user) {
+      throw new CustomError(
+        errors.unauthorized.message,
+        errors.unauthorized.statusCode,
+        errors.unauthorized.publicMessage
       );
-      next(error);
-      return;
+    }
+
+    if (!(await bcrypt.compare(password, user.password))) {
+      throw new CustomError(
+        errors.unauthorized.message,
+        errors.unauthorized.statusCode,
+        errors.unauthorized.wrongCredentialsMessage
+      );
     }
 
     const jsonWebTokenPayload: CustomJwtPayload = {
@@ -35,7 +43,7 @@ export const loginUser = async (
       expiresIn: "3d",
     });
 
-    res.status(200).json({ token });
+    res.status(successes.ok.statusCode).json({ token });
   } catch (error) {
     next(error);
   }

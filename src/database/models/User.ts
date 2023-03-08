@@ -1,5 +1,8 @@
 import { model, Schema } from "mongoose";
 
+const documentModelName = "User";
+const collectionName = "users";
+
 const userSchema = new Schema({
   username: {
     type: String,
@@ -20,6 +23,6 @@ const userSchema = new Schema({
   },
 });
 
-const User = model("User", userSchema, "users");
+const User = model(documentModelName, userSchema, collectionName);
 
 export default User;

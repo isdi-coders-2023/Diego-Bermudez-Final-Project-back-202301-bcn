@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 import User from "../../database/models/User.js";
-import connectToDatabase from "../../database/models/connectToDataBase.js";
+import connectToDatabase from "../../database/connectToDataBase.js";
 import { app } from "..";
 
 let mongoBbServer: MongoMemoryServer;
@@ -33,8 +33,6 @@ describe("Given a POST 'user/login' endpoint", () => {
         password: "123456789",
         email: "di3boos@gmail.com",
       };
-
-      const expectedStatus = 200;
       const endpoint = "/users/login";
 
       jwt.sign = jest.fn().mockImplementation(() => ({

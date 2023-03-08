@@ -1,10 +1,10 @@
+import "../loadEnvironment.js";
 import createDebug from "debug";
 import type CustomError from "../CustomError/CustomError.js";
+import errors from "./constants/errors.js";
 import { app } from "./index.js";
 
 const debug = createDebug("Back2Game:startServer");
-const startingServerErrorMessage = "Error on starting the server";
-const errorCodeAddresInUse = "EADDRINUSE";
 
 const portInUseMessage = (port: number | string) =>
   `The port number ${port} is already in use`;
@@ -16,11 +16,11 @@ const startServer = async (port: number | string) =>
     });
 
     server.on("error", (error: CustomError) => {
-      if (error.code === errorCodeAddresInUse) {
-        debug(startingServerErrorMessage, portInUseMessage(port));
+      if (error.code === errors.otherErrors.eaddrinuse) {
+        debug(errors.serverError.startingServerMessage, portInUseMessage(port));
       }
 
-      reject(new Error(startingServerErrorMessage));
+      reject(new Error(errors.serverError.startingServerMessage));
     });
   });
 

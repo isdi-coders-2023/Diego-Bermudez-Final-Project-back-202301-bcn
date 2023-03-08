@@ -1,3 +1,5 @@
+import { type Request } from "express";
+
 export interface GameStructure {
   title: string;
   platform: string;
@@ -17,3 +19,11 @@ export interface UserStructure {
 }
 
 export type UsersStructure = UserStructure[];
+
+export type UserCredentials = Pick<UserStructure, "username" | "password">;
+
+export type CustomRequest = Request<
+  Record<string, unknown>,
+  Record<string, unknown>,
+  UserCredentials
+>;
