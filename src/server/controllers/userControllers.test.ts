@@ -46,7 +46,7 @@ describe("Given a POST 'users/login' endpoint", () => {
 
   describe("When it receives a login request with username 'di3boss' and password '123456789'", () => {
     test("Then it should respond with status code '200' and its json method with a token", async () => {
-      const expectedStatusCodeOk = successes.ok.statusCode;
+      const { statusCode } = successes.ok;
       const mockedHasedPasswordCompareResult = true;
 
       const expectedToken = {
@@ -67,7 +67,7 @@ describe("Given a POST 'users/login' endpoint", () => {
 
       await loginUser(request as CustomRequest, response as Response, next);
 
-      expect(response.status).toHaveBeenCalledWith(expectedStatusCodeOk);
+      expect(response.status).toHaveBeenCalledWith(statusCode);
       expect(response.json).toHaveBeenCalledWith(expectedToken);
     });
   });
