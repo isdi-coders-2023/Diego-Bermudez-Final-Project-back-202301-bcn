@@ -30,6 +30,8 @@ describe("Given a POST 'users/login' endpoint", () => {
     email: "",
   };
 
+  let mockedHasedPasswordCompareResult = true;
+
   const request: Partial<Request> = {};
 
   const response: Partial<Response> = {
@@ -47,7 +49,6 @@ describe("Given a POST 'users/login' endpoint", () => {
   describe("When it receives a login request with username 'di3boss' and password '123456789'", () => {
     test("Then it should respond with status code '200' and its json method with a token", async () => {
       const { statusCode } = successes.ok;
-      const mockedHasedPasswordCompareResult = true;
 
       const expectedToken = {
         token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
@@ -73,33 +74,71 @@ describe("Given a POST 'users/login' endpoint", () => {
   });
 
   describe("when it receives a request with a password that doesn't exist in the database", () => {
-    test("Then it should call its next method with a status code 401 and a message 'Unauthorized: User not found'", async () => {
+    test("Then it should call its next method with a status code 401 and a message 'Unauthorized: User or password not found.", async () => {
       const mockedWrongUser = {
         username: "di3boss",
         password: "wr0ngPassw0rd",
         email: "",
       };
 
-      const expectedError = new CustomError(
+      const expectedCredentialsError = new CustomError(
+        errors.unauthorized.message,
+        errors.unauthorized.statusCode,
+        errors.unauthorized.wrongCredentialsMessage
+      );
+
+      mockedHasedPasswordCompareResult = false;
+
+      request.body = mockedWrongUser;
+
+      User.findOne = jest.fn().mockImplementationOnce(() => ({
+        exec: jest.fn().mockReturnValue({
+          ...request.body,
+          _id: new mongoose.Types.ObjectId(),
+        }),
+      }));
+
+      bcrypt.compare = jest
+        .fn()
+        .mockResolvedValue(mockedHasedPasswordCompareResult);
+
+      await loginUser(request as CustomRequest, response as Response, next);
+
+      expect(next).toHaveBeenCalledWith(expectedCredentialsError);
+    });
+  });
+
+  describe("when it receives a request with a username that doesn't exist in the database", () => {
+    test("Then it should call its next method with a status code 401 and a message 'Unauthorized: User or password not found.'", async () => {
+      const mockedWrongUser = {
+        username: "wr0ngUs3r",
+        password: "123456789",
+        email: "",
+      };
+
+      const expectedUnauthorizedError = new CustomError(
         errors.unauthorized.message,
         errors.unauthorized.statusCode,
         errors.unauthorized.publicMessage
       );
 
+      const userFindOneResult = undefined;
+
       request.body = mockedWrongUser;
 
       User.findOne = jest.fn().mockImplementationOnce(() => ({
-        exec: jest.fn().mockResolvedValue({
-          ...mockedWrongUser,
-          _id: new mongoose.Types.ObjectId(),
-        }),
+        exec: jest.fn().mockResolvedValue(userFindOneResult),
       }));
 
-      bcrypt.compare = jest.fn().mockResolvedValue(false);
+      mockedHasedPasswordCompareResult = true;
+
+      bcrypt.compare = jest
+        .fn()
+        .mockResolvedValue(mockedHasedPasswordCompareResult);
 
       await loginUser(request as CustomRequest, response as Response, next);
 
-      expect(next).toHaveBeenCalledWith(expectedError);
+      expect(next).toHaveBeenCalledWith(expectedUnauthorizedError);
     });
   });
 });
