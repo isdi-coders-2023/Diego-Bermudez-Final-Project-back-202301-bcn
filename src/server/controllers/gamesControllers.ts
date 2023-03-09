@@ -12,14 +12,16 @@ export const getGames = async (
   try {
     const games = await Game.find().exec();
 
-    res.status(successes.ok.statusCode).json({ games });
-  } catch (error) {
-    next(
-      new CustomError(
-        error as string,
+    if (!games) {
+      throw new CustomError(
+        errors.serverError.message,
         errors.serverError.statusCode,
         errors.serverError.gamesMessage
-      )
-    );
+      );
+    }
+
+    res.status(successes.ok.statusCode).json({ games });
+  } catch (error) {
+    next(error);
   }
 };

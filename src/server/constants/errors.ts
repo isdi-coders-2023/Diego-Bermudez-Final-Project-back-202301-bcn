@@ -7,8 +7,8 @@ const errors = {
   unauthorized: {
     message: "Unauthorized: User or password not found.",
     statusCode: 401,
-    publicMessage: "Unauthorized: User not found.",
-    wrongCredentialsMessage: "Unauthorized: Wrong credentials",
+    publicMessage: "Unauthorized: User or password not found.",
+    wrongCredentialsMessage: "Unauthorized: Wrong credentials.",
   },
   forbidden: {
     message: "Forbidden: You're missing permission to execute this request.",
@@ -17,17 +17,17 @@ const errors = {
       "Forbidden: You're missing permission to execute this request.",
   },
   notFound: {
-    message: "Not Found: End point or path not found",
+    message: "Not Found: End point or path not found.",
     statusCode: 404,
-    publicMessage: "Not Found: End point or path not found",
+    publicMessage: "Not Found: End point or path not found.",
   },
   serverError: {
-    message: "Internal Server Error: Something went wrong",
+    message: "Internal Server Error: Something went wrong.",
     statusCode: 500,
-    publicMessage: "Internal Server Error: Something went wrong",
-    startingServerMessage: "Error on starting the server",
+    publicMessage: "Internal Server Error: Something went wrong.",
+    startingServerMessage: "Error on starting the server.",
     gamesMessage: "Internal Server Error: Couldn't retrieve games.",
-    databaseMessage: "Error while connecting to data base",
+    databaseMessage: "Error while connecting to data base.",
   },
   otherErrors: {
     eaddrinuse: "EADDRINUSE",

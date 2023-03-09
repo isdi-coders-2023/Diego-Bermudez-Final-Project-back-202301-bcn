@@ -23,7 +23,7 @@ afterAll(async () => {
   await mongoose.connection.close();
 });
 
-describe("Given a POST 'users/login' endpoint", () => {
+describe("Given the POST 'users/login' endpoint", () => {
   const mockedUser = {
     username: "di3boss",
     password: "123456789",
