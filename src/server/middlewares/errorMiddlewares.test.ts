@@ -25,19 +25,29 @@ describe("Given the notFoundError middleware", () => {
 });
 
 describe("Given a generalError middleware", () => {
+  const error = new CustomError(
+    errors.serverError.message,
+    errors.serverError.statusCode,
+    errors.serverError.publicMessage
+  );
+  const { statusCode } = errors.serverError;
+
   describe("When it receives an error with status 500", () => {
     test("Then it shoudl call its status method with a 500", () => {
-      const { statusCode } = errors.serverError;
+      generalError(error, request as Request, response as Response, next);
 
-      const error = new CustomError(
-        errors.serverError.message,
-        errors.serverError.statusCode,
-        errors.serverError.publicMessage
-      );
+      expect(response.status).toHaveBeenCalledWith(statusCode);
+    });
+  });
+
+  describe("When it receives an error not specified", () => {
+    test("then it should return a status code '500' and its json method with 'Something went wrong'", () => {
+      const expectedErrorMessage = { error: errors.serverError.publicMessage };
 
       generalError(error, request as Request, response as Response, next);
 
       expect(response.status).toHaveBeenCalledWith(statusCode);
+      expect(response.json).toHaveBeenCalledWith(expectedErrorMessage);
     });
   });
 });
