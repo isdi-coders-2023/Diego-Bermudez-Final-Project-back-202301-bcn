@@ -4,6 +4,7 @@ import cors from "cors";
 import options from "./middlewares/cors.js";
 import gamesRouter from "./routers/gamesRouters.js";
 import usersRouter from "./routers/usersRouters.js";
+import { generalError, notFoundError } from "./middlewares/errorMiddlewares.js";
 
 const gamesEndpoint = "/games";
 const usersEndpoint = "/users";
@@ -18,3 +19,6 @@ app.use(express.json());
 
 app.use(gamesEndpoint, gamesRouter);
 app.use(usersEndpoint, usersRouter);
+
+app.use(notFoundError);
+app.use(generalError);
