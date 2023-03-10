@@ -50,4 +50,17 @@ describe("Given a generalError middleware", () => {
       expect(response.json).toHaveBeenCalledWith(expectedErrorMessage);
     });
   });
+
+  describe("When it receives an error not specified", () => {
+    test("then it should return a status code '500' and its json method with 'Something went wrong'", () => {
+      const expectedErrorMessage = {
+        error: errors.serverError.publicMessage,
+      };
+
+      generalError(error, request as Request, response as Response, next);
+
+      expect(response.status).toHaveBeenCalledWith(statusCode);
+      expect(response.json).toHaveBeenCalledWith(expectedErrorMessage);
+    });
+  });
 });
